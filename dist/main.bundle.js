@@ -354,103 +354,55 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 
 
 var Login = (function () {
-    function Login(router, api, user, chatService) {
+    function Login(router, api, user, io) {
         this.router = router;
         this.api = api;
         this.user = user;
-        this.chatService = chatService;
-        this.messages = [];
+        this.io = io;
         this.showLogin = true;
         this.working = false;
         this.usernameError = null;
         this.passwordError = null;
     }
     Login.prototype.ngOnInit = function () {
-        var _this = this;
-        this.connection = this.chatService.getMessages().subscribe(function (message) {
-            console.log("sending message over socket");
-            _this.messages.push(message);
-        });
-        this.chatService.sendMessage("Test Message");
-        // this.socket = io('http://localhost:8000');
         // this.connection = this.io.getMessages().subscribe(message => {
-        // this.messages.push(message);
-        // });
+        //   console.log("sending message over socket");
+        //   this.messages.push(message);
+        // })
+        //
         // this.io.sendMessage("Test Message");
-        // this.socket.emit('newUser', "Test Data");
-        //     if (this.user.isLoggedIn()) {
-        //       this.router.navigate(['home']);
-        //     } else if (this.user.isSessionExpired()) {
-        //       this.passwordError = 'Your session has expired.';
-        //       this.user.resetSessionExpired();
-        //     }
+        if (this.user.isLoggedIn()) {
+            this.router.navigate(['home']);
+        }
+        else if (this.user.isSessionExpired()) {
+            this.passwordError = 'Your session has expired.';
+            this.user.resetSessionExpired();
+        }
     };
-    Login.prototype.toggleLogin = function () {
-        // If an API call is in progress, ignore the button press.
-        if (this.working)
-            return;
-        this.showLogin = !this.showLogin;
-        // Reset the form
-        this.username.nativeElement.value = '';
-        this.password.nativeElement.value = '';
-        this.usernameError = null;
-        this.passwordError = null;
-    };
+    // private toggleLogin() {
+    //   // If an API call is in progress, ignore the button press.
+    //   if (this.working) return;
+    //
+    //   this.showLogin = !this.showLogin;
+    //   // Reset the form
+    //   this.username.nativeElement.value = '';
+    //   this.password.nativeElement.value = '';
+    //   this.usernameError = null;
+    //   this.passwordError = null;
+    // }
     Login.prototype.submitForm = function () {
         // If an API call is in progress, ignore the button press.
         if (this.working)
             return;
         var username = this.username.nativeElement.value;
         var password = this.password.nativeElement.value;
-        if (this.showLogin) {
-            this.login(username, password);
-        }
-        else {
-            this.signup(username, password);
-        }
-    };
-    Login.prototype.login = function (username, password) {
-        var _this = this;
+        // if (this.showLogin) {
         this.working = true;
-        this.api.userLogin(username, password)
-            .subscribe(function (data) {
-            _this.user.setUser(username, data.jwt);
-            _this.router.navigate(['home']);
-        }, function (err) {
-            _this.passwordError = err;
-            _this.working = false;
-        });
-    };
-    Login.prototype.signup = function (username, password) {
-        var _this = this;
-        // Client-side check of username and password
-        if (username.length == 0) {
-            this.usernameError = 'Username must not be empty.';
-        }
-        else {
-            this.usernameError = null;
-        }
-        if (password.length < 8) {
-            this.passwordError = 'Password must be at least 8 characters long.';
-        }
-        else if (password.length > 72) {
-            this.passwordError = 'Password must be no more than 72 characters long.';
-        }
-        else {
-            this.passwordError = null;
-        }
-        // Attempt to register if the username and password seem to be OK
-        if (this.usernameError == null && this.passwordError == null) {
-            this.working = true;
-            this.api.userAdd(username, password)
-                .subscribe(function (data) {
-                _this.user.setUser(username, data.jwt);
-                _this.router.navigate(['home']);
-            }, function (err) {
-                _this.usernameError = err;
-                _this.working = false;
-            });
-        }
+        this.io.authenticate(username, password);
+        // this.login(username, password);
+        // } else {
+        //   this.signup(username, password);
+        // }
     };
     __decorate([
         __webpack_require__.i(__WEBPACK_IMPORTED_MODULE_0__angular_core__["ViewChild"])('username'), 
@@ -539,6 +491,16 @@ var Socket = (function () {
     }
     Socket.prototype.sendMessage = function (message) {
         this.socket.emit('add-message', message);
+    };
+    Socket.prototype.authenticate = function (username, password) {
+        var socket = __WEBPACK_IMPORTED_MODULE_1_socket_io_client__["connect"](this.url);
+        socket.on('connect', function () {
+            // socket.emit('authenticate', {token: myAuthToken});
+            socket.emit('authenticate', { username: username, password: password });
+            // socket.on('authenticated', function() {
+            //   // Do stuff
+            // });
+        });
     };
     Socket.prototype.getMessages = function () {
         var _this = this;

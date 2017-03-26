@@ -10,6 +10,18 @@ export class Socket {
     this.socket.emit('add-message', message);
   }
 
+  authenticate(username : string, password :string){
+    var socket = io.connect(this.url);
+  socket.on('connect', function(){
+    // socket.emit('authenticate', {token: myAuthToken});
+    socket.emit('authenticate', {username: username, password: password});
+    // socket.on('authenticated', function() {
+    //   // Do stuff
+    // });
+  });
+}
+
+
   getMessages() {
     let observable = new Observable(observer => {
       this.socket = io(this.url, {  path: '/socket.io'});
