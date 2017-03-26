@@ -1,0 +1,48 @@
+.contents {
+    border-top: 1px solid #E3E3E3;
+    margin-left: 44px;
+    padding: 10px 0;
+    text-align: left;
+}
+
+.contents > p {
+    margin: 0;
+}
+
+.file {
+    background-color: #F9F9F9;
+    border-top: 1px solid #E3E3E3;
+    margin: 0;
+    padding: 0;
+}
+
+.file-even {
+    background-color: white;
+}
+
+.header {
+    height: 36px;
+    cursor: pointer;
+    font-size: 16px;
+    list-style-type: none;
+    line-height: 36px;
+    margin: 0;
+    padding: 0;
+    text-align: left;
+}
+
+.header > li {
+    display: inline-block;
+}
+
+.header > * > .glyphicon {
+    font-size: 16px;
+}
+
+.header > * > .glyphicon-chevron-down {
+    margin: 8px 4px 0 16px;
+}
+
+.header > * > .glyphicon-chevron-right {
+    margin: 8px 10px;
+}

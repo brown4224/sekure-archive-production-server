@@ -1,0 +1,12 @@
+<div class="file" [class.file-even]="even">
+  <ul class="header" (click)="toggleOpen()">
+    <li><div *ngIf="open" class="glyphicon glyphicon-chevron-down"></div></li>
+    <li><div *ngIf="!open" class="glyphicon glyphicon-chevron-right"></div></li>
+    <li><p>{{file.name}}</p></li>
+  </ul>
+  <div *ngIf="open" class="contents">
+  <button type="submit" class="btn btn-default btn-danger" (click)="restoreFile()">Restore</button>
+    <p>Mime: {{file.mime}}</p>
+    <p>Size: {{file.size | bytes}}</p>
+  </div>
+</div>

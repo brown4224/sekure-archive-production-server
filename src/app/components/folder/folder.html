@@ -1,0 +1,10 @@
+<div class="folder">
+  <ul class="header" (click)="toggleOpen()">
+    <li><div *ngIf="open" class="glyphicon glyphicon-folder-open"></div></li>
+    <li><div *ngIf="!open" class="glyphicon glyphicon-folder-close"></div></li>
+    <li><p>{{folder.path}}</p></li>
+  </ul>
+  <div *ngIf="open && files" class="contents">
+    <file *ngFor="let file of files; let i = index" [file]="file" [even]="i % 2 == 0"></file>
+  </div>
+</div>

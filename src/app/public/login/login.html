@@ -1,0 +1,23 @@
+<div class="main">
+  <div class="wrapper">
+    <div class="well">
+      <spinner *ngIf="working" [size]="96"></spinner>
+      <h2>{{showLogin? "Login" : "Sign Up"}}</h2>
+      <form role="form">
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input [disabled]="working" type="text" #username class="form-control" id="username" placeholder="Username">
+          <div *ngIf="usernameError" class="alert alert-danger" role="alert"><b>Error:</b> {{usernameError}}</div>
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input [disabled]="working" type="password" #password class="form-control" id="password" placeholder="Password">
+          <div *ngIf="passwordError" class="alert alert-danger" role="alert"><b>Error:</b> {{passwordError}}</div>
+        </div>
+        <a [class.disabled]="working" class="btn btn-default" (click)="toggleLogin()">{{showLogin? "Sign Up" : "Login"}}</a>
+        <a [class.disabled]="working" class="btn btn-success pull-right" (click)="submitForm()">{{showLogin? "Login" : "Sign Up"}}</a>
+        <div class="clearfix"></div>
+      </form>
+    </div>
+  </div>
+</div>

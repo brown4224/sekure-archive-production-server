@@ -1,0 +1,29 @@
+<nav class="navbar navbar-default navbar-fixed">
+  <div class="container-fluid">
+    <div class="navbar-header">
+      <a class="navbar-brand" [routerLink]="['home']">SEKure Archive</a>
+    </div>
+    <div class="nav navbar-right">
+      <p class="navbar-text">Logged in as: {{username}}</p>
+      <button type="submit" class="btn btn-default btn-danger" (click)="logout()">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- SPINNNER for Loading -->
+<spinner *ngIf="working" [size]="96"></spinner>
+<!-- Container for folder and files -->
+<div class = "container">
+  <div class="text-center">
+    <div *ngIf="flash.error" class="alert alert-danger" role="alert" (click)="flash.error = null">
+      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <b>Error:</b> {{flash.error}}
+    </div>
+    <div *ngIf="flash.notification" class="alert alert-info" role="alert" (click)="flash.notification = null">
+      <a class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      {{flash.notification}}
+    </div>
+    <h3>Folders</h3>
+    <folder *ngFor="let folder of folders" [folder]="folder"></folder>
+  </div>
+</div>
