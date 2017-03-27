@@ -1,4 +1,14 @@
 var config = {};
+
+//Express
+config.express = {};
+config.express.url=
+config.express.port=3000;
+config.express.staticFolder='../dist';
+
+//Socket.io
+config.socket = {};
+
 //LDAP CONFIG
 config.ldap = {};
 config.ldap.url= 'ldap://ldap.forumsys.com:389';
