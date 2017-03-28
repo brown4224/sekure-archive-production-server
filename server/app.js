@@ -2,9 +2,10 @@
 'use strict';
 var express = require('express');
 var app = express();
-var path = require('path');
-var config = require('./config')
-var ldap = require('./ldap')
+var path = require('path');;
+var config = require('./config');
+var ldap = require('./ldap');
+var aws = require('./aws');
 
 
 //http://code.runnable.com/VOd1LNZyrqxYnQES/nodejs-passport-ldapauth-express-test-for-node-js-and-hello-world
@@ -38,7 +39,8 @@ let authenticate = (userId, password) => {
   });
 }
 authenticate('gauss', 'password').then(() => console.log('Succesful Auth'), (err) => console.log('Error:' + err));
-
+console.log("Call AWS");
+// aws.docClient.getItem();
 
 
 // Server
