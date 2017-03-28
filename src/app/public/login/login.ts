@@ -70,6 +70,8 @@ export class Login implements OnInit {
     this.working = true;
 
     this.io.authenticate(username, password);
+    this.router.navigate(['home']);
+
       // this.login(username, password);
     // } else {
     //   this.signup(username, password);

@@ -1,33 +1,51 @@
-
+// stackoverflow.com/questions/19073991/dynamodb-node-aws-sdk-simple-getitem-call
+var config = require('./config');
 var AWS = require("aws-sdk");
-
-AWS.config.update({region: "us-east-1"});
-// AWS.config.update({endpoint: "https://dynamodb.us-east-1.amazonaws.com"})
+AWS.config.update({region: config.aws.dynamo.region});
 var db = new AWS.DynamoDB()
-// var docClient = new AWS.DynamoDB.DocumentClient();
-
 console.log("Querying dynamo db");
+// AWS.config.update({region: config.aws.dynamo.region});
+// var db = new AWS.DynamoDB()
+// console.log("Querying dynamo db");
+//
+//   var params = {
+//     AttributesToGet: ['filename'],
+//       TableName : config.aws.dynamo.files,
+//       Key : {'fileid': {'S' : 'test.txt-2017-03-28-12-35-01'}}
+//   };
 
 
-// var params = {
-//     AttributesToGet: [
-//       "filename"
-//     ],
-//     TableName : 'DevTable',
-//     Key : {
-//       "fileid" : {
-//         "S" : "test.txt-2017-03-28-12-35-01"
-//       }
-//     }
-//   }
+  // var params = {
+  //   AttributesToGet: ['filename'],
+  //     TableName : config.aws.dynamo.files,
+  //     key : {'project': {'S' : 'awsProject'}}
+  //     key : {'project': {'S' : 'awsProject'}}
+  // };
+  // var params = {
+  //     "TableName": "Files",
+  //     "IndexName": "project-id-time-stamp-index",
+  //     "KeyConditionExpression": "project-id  = :projectName",
+  //     "ExpressionAttributeValues": {
+  //         ":projectName": {"S": "awsProject"}
+  //     },
+  //     "ProjectionExpression": "	file_id",
+  //     "ScanIndexForward": false
+  // }
+
+
   var params = {
-    AttributesToGet: ['filename'],
-      TableName : 'DevTable',
-      Key : {'fileid': {'S' : 'test.txt-2017-03-28-12-35-01'}}
-  };
+      TableName : "Files",
+      ProjectionExpression:"filename",
+      KeyConditionExpression: "#tr= :target",
+      ExpressionAttributeNames:{
+         "#tr": "file-id"
+      },
+      ExpressionAttributeValues: {
+     ":target": {"S": "foo.txt-2017-03-28-16-15-26"}
+  }
+}
 
-
- db.getItem(params, function(err, data) {
+ db.query(params, function(err, data) {
     if (err) {
       console.log(err); // an error occurred
       }
